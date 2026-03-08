@@ -21,13 +21,13 @@ El objetivo de este repositorio es mantener una colección de pequeñas utilidad
 1. [Administrador de Red](#1-administrador-de-red)
 ---
 
-##Documentación de Scripts
+## Documentación de Scripts
 
 ### 1. Administrador de Red
 
 **Archivo:** `administrador-de-red_07-03-2026.sh`
 
-**Descripción**
+#### **Descripción**
 Script interactivo desarrollado en Bash para la administración y configuración básica de redes en sistemas GNU/Linux. Permite gestionar el estado de las interfaces, establecer conexiones inalámbricas y configurar el direccionamiento IP de manera dinámica o estática desde la línea de comandos.
 
 **Funcionalidades**
