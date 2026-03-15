@@ -18,9 +18,10 @@ El objetivo de este repositorio es mantener una colección de pequeñas utilidad
 
 ## Scripts
 
-1. [Administrador de Red](#1-administrador-de-red)
-2. [Enviar archivo a papelera](#2-enviar-archivo-a-papelera)  
-3. [Recuperar archivo de papelera](#3-recuperar-archivo-de-papelera)
+1. [Administrador de Red](#1-administrador-de-red)  
+2. Papelera en CLI  
+   2.1 [Enviar archivo a papelera](#21-enviar-archivo-a-papelera)  
+   2.2 [Recuperar archivo de papelera](#22-recuperar-archivo-de-papelera)
 ---
 
 ## Documentación de Scripts
@@ -49,46 +50,51 @@ Si se acepta, el script guarda los comandos de configuración necesarios (levant
 
 ---
 
-### 2. Enviar archivo a papelera
-
-**Archivo:** [enviar_a_papelera_15-03-2026.sh](https://github.com/kevinmaar/Linux-Admin-Toolkit/blob/main/enviar_a_papelera_15-03-2026.sh)
+### 2. Papelera en CLI
 
 #### **Descripción**
-Script desarrollado en Bash que implementa un mecanismo simple de eliminación segura de archivos. En lugar de borrar el archivo de manera permanente, el script lo mueve a un directorio especial denominado **papelera**, permitiendo su recuperación posterior.
+Conjunto de scripts desarrollados en Bash que implementan un mecanismo sencillo de **papelera de reciclaje en la línea de comandos** para sistemas GNU/Linux.
 
-Este comportamiento simula el funcionamiento de una papelera de reciclaje en sistemas gráficos, pero utilizando únicamente herramientas de línea de comandos en sistemas GNU/Linux.
+En lugar de eliminar archivos permanentemente, los archivos son movidos a un directorio especial (`~/.papelera`) desde donde pueden ser restaurados posteriormente.
 
-**Funcionamiento**
+El sistema está compuesto por dos scripts:
 
-El script realiza las siguientes acciones:
-
-* Verifica que el usuario proporcione exactamente un argumento al ejecutarlo.
-* Comprueba que el archivo especificado exista en el sistema.
-* Crea el directorio `~/.papelera` en caso de que no exista.
-* Guarda la **ruta original del archivo** en un archivo auxiliar con extensión `.ruta`.
-* Mueve el archivo a la carpeta de papelera para evitar su eliminación permanente.
-
-Este mecanismo permite conservar temporalmente archivos eliminados para su recuperación posterior mediante un script complementario.
+* Un script para enviar archivos a la papelera.
+* Un script para recuperar archivos eliminados.
 
 ---
 
-### 3. Recuperar archivo de papelera
+#### 2.1 Enviar archivo a papelera
 
-**Archivo:** [recuperar_de_papelera_15-03-2026.sh](https://github.com/kevinmaar/Linux-Admin-Toolkit/blob/main/recuperar_de_papelera_15-03-2026.sh)
+**Archivo:** [enviar_a_papelera_15-03-2026.sh](https://github.com/kevinmaar/Linux-Admin-Toolkit/blob/main/enviar_a_papelera_15-03-2026.sh)
 
-#### **Descripción**
-Script desarrollado en Bash que permite restaurar archivos previamente enviados a la papelera mediante el script de eliminación segura. El proceso de recuperación utiliza la información de la **ruta original** almacenada durante la eliminación del archivo.
+##### **Descripción**
+
+Script que permite eliminar archivos de forma recuperable moviéndolos al directorio `~/.papelera`.
 
 **Funcionamiento**
 
-El script realiza las siguientes acciones:
+* Verifica que se proporcione un archivo como argumento.
+* Comprueba que el archivo exista.
+* Crea el directorio `~/.papelera` si no existe.
+* Guarda la ruta original del archivo en un archivo auxiliar `.ruta`.
+* Mueve el archivo a la papelera en lugar de eliminarlo definitivamente.
 
-* Verifica que el usuario proporcione el nombre del archivo a recuperar.
-* Comprueba que el archivo exista dentro del directorio `~/.papelera`.
-* Lee el archivo auxiliar `.ruta` para obtener la ubicación original del archivo.
-* Restaura el archivo moviéndolo nuevamente a su directorio original.
+---
+
+#### 2.2 Recuperar archivo de papelera
+
+**Archivo:** [recuperar_de_papelera_15-03-2026.sh](https://github.com/kevinmaar/Linux-Admin-Toolkit/blob/main/recuperar_de_papelera_15-03-2026.sh)
+
+##### **Descripción**
+
+Script que permite restaurar archivos previamente enviados a la papelera, regresándolos a su ubicación original.
+
+**Funcionamiento**
+
+* Verifica que el archivo solicitado exista dentro de `~/.papelera`.
+* Lee la ruta original almacenada en el archivo `.ruta`.
+* Mueve el archivo de regreso a su ubicación original.
 * Elimina el archivo auxiliar utilizado para almacenar la ruta.
-
-Este procedimiento permite recuperar archivos eliminados accidentalmente mientras permanezcan dentro del directorio de papelera del usuario.
 
 ---
