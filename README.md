@@ -19,6 +19,8 @@ El objetivo de este repositorio es mantener una colección de pequeñas utilidad
 ## Scripts
 
 1. [Administrador de Red](#1-administrador-de-red)
+2. [Enviar archivo a papelera](#2-enviar-archivo-a-papelera)  
+3. [Recuperar archivo de papelera](#3-recuperar-archivo-de-papelera)
 ---
 
 ## Documentación de Scripts
@@ -44,5 +46,49 @@ El script se maneja a través de un menú interactivo con las siguientes opcione
 Al configurar una conexión de red ya sea IP dinámica o estática, por cable o WiFi, el script pregunta al usuario si desea hacer la configuración persistente.
 
 Si se acepta, el script guarda los comandos de configuración necesarios (levantamiento de interfaz, DNS, conexión WPA, etc.) al final del archivo `~/.bashrc` del usuario que ejecuta el script `/root/.bashrc` ya que el script es ejecutado como `sudo`. Adicionalmente, el archivo temporal de credenciales WiFi generado en `/tmp/wifi` se reubica en `~/.wifi` para permitir la autenticación automática en futuros inicios de sesión.
+
+---
+
+### 2. Enviar archivo a papelera
+
+**Archivo:** [enviar_a_papelera_15-03-2026.sh](https://github.com/kevinmaar/Linux-Admin-Toolkit/blob/main/enviar_a_papelera_15-03-2026.sh)
+
+#### **Descripción**
+Script desarrollado en Bash que implementa un mecanismo simple de eliminación segura de archivos. En lugar de borrar el archivo de manera permanente, el script lo mueve a un directorio especial denominado **papelera**, permitiendo su recuperación posterior.
+
+Este comportamiento simula el funcionamiento de una papelera de reciclaje en sistemas gráficos, pero utilizando únicamente herramientas de línea de comandos en sistemas GNU/Linux.
+
+**Funcionamiento**
+
+El script realiza las siguientes acciones:
+
+* Verifica que el usuario proporcione exactamente un argumento al ejecutarlo.
+* Comprueba que el archivo especificado exista en el sistema.
+* Crea el directorio `~/.papelera` en caso de que no exista.
+* Guarda la **ruta original del archivo** en un archivo auxiliar con extensión `.ruta`.
+* Mueve el archivo a la carpeta de papelera para evitar su eliminación permanente.
+
+Este mecanismo permite conservar temporalmente archivos eliminados para su recuperación posterior mediante un script complementario.
+
+---
+
+### 3. Recuperar archivo de papelera
+
+**Archivo:** [recuperar_de_papelera_15-03-2026.sh](https://github.com/kevinmaar/Linux-Admin-Toolkit/blob/main/recuperar_de_papelera_15-03-2026.sh)
+
+#### **Descripción**
+Script desarrollado en Bash que permite restaurar archivos previamente enviados a la papelera mediante el script de eliminación segura. El proceso de recuperación utiliza la información de la **ruta original** almacenada durante la eliminación del archivo.
+
+**Funcionamiento**
+
+El script realiza las siguientes acciones:
+
+* Verifica que el usuario proporcione el nombre del archivo a recuperar.
+* Comprueba que el archivo exista dentro del directorio `~/.papelera`.
+* Lee el archivo auxiliar `.ruta` para obtener la ubicación original del archivo.
+* Restaura el archivo moviéndolo nuevamente a su directorio original.
+* Elimina el archivo auxiliar utilizado para almacenar la ruta.
+
+Este procedimiento permite recuperar archivos eliminados accidentalmente mientras permanezcan dentro del directorio de papelera del usuario.
 
 ---
