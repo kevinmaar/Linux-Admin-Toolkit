@@ -70,15 +70,17 @@ El sistema está compuesto por dos scripts:
 
 ##### **Descripción**
 
-Script que permite eliminar archivos de forma recuperable moviéndolos al directorio `~/.papelera`.
+Script desarrollado en Bash que implementa un mecanismo simple de eliminación segura de archivos. En lugar de borrar el archivo de manera permanente, el script lo mueve a un directorio especial denominado **papelera**, permitiendo su recuperación posterior.
+
+Este comportamiento simula el funcionamiento de una papelera de reciclaje en sistemas gráficos, pero utilizando únicamente herramientas de línea de comandos en sistemas GNU/Linux.
 
 **Funcionamiento**
 
-* Verifica que se proporcione un archivo como argumento.
-* Comprueba que el archivo exista.
-* Crea el directorio `~/.papelera` si no existe.
-* Guarda la ruta original del archivo en un archivo auxiliar `.ruta`.
-* Mueve el archivo a la papelera en lugar de eliminarlo definitivamente.
+* Verifica que el usuario proporcione exactamente un argumento al ejecutarlo.
+* Comprueba que el archivo especificado exista en el sistema.
+* Crea el directorio `~/.papelera` en caso de que no exista.
+* Guarda la **ruta original del archivo** en un archivo auxiliar con extensión `.ruta`.
+* Mueve el archivo a la carpeta de papelera para evitar su eliminación permanente.
 
 ---
 
@@ -88,13 +90,14 @@ Script que permite eliminar archivos de forma recuperable moviéndolos al direct
 
 ##### **Descripción**
 
-Script que permite restaurar archivos previamente enviados a la papelera, regresándolos a su ubicación original.
+Script desarrollado en Bash que permite restaurar archivos previamente enviados a la papelera mediante el script de eliminación segura. El proceso de recuperación utiliza la información de la **ruta original** almacenada durante la eliminación del archivo.
 
 **Funcionamiento**
 
-* Verifica que el archivo solicitado exista dentro de `~/.papelera`.
-* Lee la ruta original almacenada en el archivo `.ruta`.
-* Mueve el archivo de regreso a su ubicación original.
+* Verifica que el usuario proporcione el nombre del archivo a recuperar.
+* Comprueba que el archivo exista dentro del directorio `~/.papelera`.
+* Lee el archivo auxiliar `.ruta` para obtener la ubicación original del archivo.
+* Restaura el archivo moviéndolo nuevamente a su directorio original.
 * Elimina el archivo auxiliar utilizado para almacenar la ruta.
 
 ---
