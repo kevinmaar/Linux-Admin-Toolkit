@@ -175,12 +175,12 @@ Colección de herramientas orientadas a las fases de reconocimiento (Information
 **Archivo:** [scrapper_20-04-2026.py](https://github.com/kevinmaar/Linux-Admin-Toolkit/blob/main/scrapper_20-04-2026.py)
 
 ##### **Descripción**
-Script desarrollado en Python diseñado para automatizar la extracción de información (Information Gathering) en páginas web. Utiliza bibliotecas estándar para analizar el código fuente e identificar posibles fugas de información.
+Script desarrollado en Python diseñado para automatizar la extracción de información en páginas web. Utiliza bibliotecas estándar para analizar el código fuente e identificar posibles fugas de información.
 
 **Funcionamiento**
 * Realiza una petición HTTP GET a la URL objetivo mediante la librería `requests`.
 * Analiza y parsea el código fuente HTML de la respuesta utilizando `BeautifulSoup`.
-* Identifica y extrae todos los comentarios ocultos en el código fuente (``).
+* Identifica y extrae todos los comentarios ocultos en el código fuente.
 * Utiliza expresiones regulares (`re`) para buscar y extraer cualquier dirección de correo electrónico expuesta en la página.
 * Consolida y almacena los resultados clasificados (Comentarios y Correos) en un archivo de texto local llamado `resultado`.
 
@@ -191,7 +191,7 @@ Script desarrollado en Python diseñado para automatizar la extracción de infor
 **Archivo:** [barridoWEB_19-04-2026.sh](https://github.com/kevinmaar/Linux-Admin-Toolkit/blob/main/barridoWEB_19-04-2026.sh)
 
 ##### **Descripción**
-Herramienta de línea de comandos en Bash para realizar *Fuzzing* o descubrimiento de rutas y archivos en servidores web. Utiliza un ataque basado en diccionario para mapear la estructura de directorios no enlazados públicamente.
+Herramienta de línea de comandos en Bash para realizar descubrimiento de rutas y archivos en servidores web. Utiliza un ataque basado en diccionario para mapear la estructura de directorios no enlazados públicamente.
 
 **Funcionamiento**
 * Valida que el usuario proporcione obligatoriamente dos parámetros: la URL objetivo y la ruta a un archivo de diccionario válido.
@@ -206,7 +206,7 @@ Herramienta de línea de comandos en Bash para realizar *Fuzzing* o descubrimien
 **Archivo:** [barridoRED_19-04-2026.sh](https://github.com/kevinmaar/Linux-Admin-Toolkit/blob/main/barridoRED_19-04-2026.sh)
 
 ##### **Descripción**
-Script de Bash diseñado para ejecutar la fase de descubrimiento de hosts (Ping Sweep) dentro de una o múltiples redes locales. Identifica de manera automatizada qué dispositivos se encuentran activos en los segmentos de red a los que el equipo está conectado.
+Script de Bash diseñado para ejecutar la fase de descubrimiento de hosts dentro de una o múltiples redes locales. Identifica de manera automatizada qué dispositivos se encuentran activos en los segmentos de red a los que el equipo está conectado.
 
 **Funcionamiento**
 * Inspecciona la configuración de red del sistema utilizando el comando `ip a`.
