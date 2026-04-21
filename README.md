@@ -22,6 +22,14 @@ El objetivo de este repositorio es mantener una colección de pequeñas utilidad
 2. Papelera en CLI  
    2.1 [Enviar archivo a papelera](#21-enviar-archivo-a-papelera)  
    2.2 [Recuperar archivo de papelera](#22-recuperar-archivo-de-papelera)
+3. Creación de Usuarios  
+   3.1 [Creación de Usuarios V0 (Básico)](#31-creación-de-usuarios-v0-básico)  
+   3.2 [Creación de Usuarios V1 (Cuotas)](#32-creación-de-usuarios-v1-cuotas)  
+   3.3 [Creación de Usuarios V2 (Sudoers)](#33-creación-de-usuarios-v2-sudoers)
+4. Auditoría y Reconocimiento  
+   4.1 [Scraper Web](#41-scraper-web)  
+   4.2 [Barrido de Directorios Web](#42-barrido-de-directorios-web)  
+   4.3 [Barrido de Red](#43-barrido-de-red)
 ---
 
 ## Documentación de Scripts
@@ -101,3 +109,109 @@ Script desarrollado en Bash que permite restaurar archivos previamente enviados 
 * Elimina el archivo auxiliar utilizado para almacenar la ruta.
 
 ---
+
+### 3. Creación de Usuarios
+
+#### **Descripción**
+Serie de scripts evolutivos diseñados para automatizar el aprovisionamiento de usuarios en sistemas GNU/Linux. Estos scripts aseguran que cada cuenta creada cumpla con estándares mínimos de seguridad y permiten una administración avanzada de recursos y privilegios desde el despliegue inicial.
+
+Todos los scripts de esta categoría requieren privilegios de **root** y validan la complejidad de la contraseña (mínimo 8 caracteres, una mayúscula y un número).
+
+---
+
+#### 3.1 Creación de Usuarios V0 (Básico)
+
+**Archivo:** [creacion_de_usuariosV0_24-03-2026.sh](https://github.com/kevinmaar/Linux-Admin-Toolkit/blob/main/creacion_de_usuariosV0_24-03-2026.sh)
+
+##### **Descripción**
+Script fundamental para el alta de usuarios. Se encarga de la validación de identidad, creación del directorio personal y asignación del shell por defecto.
+
+**Funcionamiento**
+* Verifica la existencia previa del usuario para evitar duplicados.
+* Implementa un bucle de validación para la contraseña, obligando al cumplimiento de la política de seguridad establecida.
+* Crea el usuario con el flag `-m` para generar su `/home` y asigna `/bin/bash` como shell predeterminado.
+
+---
+
+#### 3.2 Creación de Usuarios V1 (Cuotas)
+
+**Archivo:** [creacion_de_usuariosV1_24-03-2026.sh](https://github.com/kevinmaar/Linux-Admin-Toolkit/blob/main/creacion_de_usuariosV1_24-03-2026.sh)
+
+##### **Descripción**
+Extensión de la versión base que añade la gestión de límites de almacenamiento por usuario, ideal para entornos de servidores compartidos o laboratorios académicos.
+
+**Funcionamiento**
+* Integra todas las funciones de validación de la V0.
+* Permite definir límites de disco **Soft** y **Hard** (en bloques de KB) utilizando la herramienta `setquota`.
+* Ofrece la posibilidad de configurar el periodo de gracia global para las cuotas de disco en el sistema.
+
+---
+
+#### 3.3 Creación de Usuarios V2 (Sudoers)
+
+**Archivo:** [creacion_de_usuariosV2_24-03-2026.sh](https://github.com/kevinmaar/Linux-Admin-Toolkit/blob/main/creacion_de_usuariosV2_24-03-2026.sh)
+
+##### **Descripción**
+La versión más avanzada orientada a la administración de sistemas y Red Teaming. Permite configurar la escalada de privilegios de forma granular y segura.
+
+**Funcionamiento**
+* Incluye las funcionalidades de creación (V0) y cuotas (V1).
+* Gestiona la inclusión del usuario en el archivo de sudoers de forma segura:
+    * Permite especificar comandos exactos (ej. `/usr/bin/apt`) o acceso total (`ALL`).
+    * Crea un archivo independiente en `/etc/sudoers.d/` para mantener la integridad del archivo `sudoers` principal.
+    * Aplica automáticamente el permiso `440` al archivo generado para cumplir con los requisitos de seguridad de sudo.
+
+---
+
+### 4. Auditoría y Reconocimiento
+
+#### **Descripción**
+Colección de herramientas orientadas a las fases de reconocimiento (Information Gathering) y auditoría de seguridad. Incluye scripts para el mapeo de redes locales, descubrimiento de recursos web ocultos y extracción de información sensible mediante técnicas de scraping.
+
+---
+
+#### 4.1 Scraper Web
+
+**Archivo:** [scrapper_20-04-2026.py](https://github.com/kevinmaar/Linux-Admin-Toolkit/blob/main/scrapper_20-04-2026.py)
+
+##### **Descripción**
+Script desarrollado en Python diseñado para automatizar la extracción de información (Information Gathering) en páginas web. Utiliza bibliotecas estándar para analizar el código fuente e identificar posibles fugas de información.
+
+**Funcionamiento**
+* Realiza una petición HTTP GET a la URL objetivo mediante la librería `requests`.
+* Analiza y parsea el código fuente HTML de la respuesta utilizando `BeautifulSoup`.
+* Identifica y extrae todos los comentarios ocultos en el código fuente (``).
+* Utiliza expresiones regulares (`re`) para buscar y extraer cualquier dirección de correo electrónico expuesta en la página.
+* Consolida y almacena los resultados clasificados (Comentarios y Correos) en un archivo de texto local llamado `resultado`.
+
+---
+
+#### 4.2 Barrido de Directorios Web
+
+**Archivo:** [barridoWEB_19-04-2026.sh](https://github.com/kevinmaar/Linux-Admin-Toolkit/blob/main/barridoWEB_19-04-2026.sh)
+
+##### **Descripción**
+Herramienta de línea de comandos en Bash para realizar *Fuzzing* o descubrimiento de rutas y archivos en servidores web. Utiliza un ataque basado en diccionario para mapear la estructura de directorios no enlazados públicamente.
+
+**Funcionamiento**
+* Valida que el usuario proporcione obligatoriamente dos parámetros: la URL objetivo y la ruta a un archivo de diccionario válido.
+* Lee el diccionario de forma iterativa, concatenando cada palabra a la dirección web base.
+* Envía una petición HTTP HEAD (`curl -I`) a cada URL generada. Esto evalúa la existencia del recurso obteniendo solo las cabeceras de respuesta, optimizando la velocidad del escaneo.
+* Filtra la salida para imprimir en pantalla únicamente las rutas que devuelven un código de estado HTTP `200` (OK), indicando que el recurso existe y es accesible.
+
+---
+
+#### 4.3 Barrido de Red
+
+**Archivo:** [barridoRED_19-04-2026.sh](https://github.com/kevinmaar/Linux-Admin-Toolkit/blob/main/barridoRED_19-04-2026.sh)
+
+##### **Descripción**
+Script de Bash diseñado para ejecutar la fase de descubrimiento de hosts (Ping Sweep) dentro de una o múltiples redes locales. Identifica de manera automatizada qué dispositivos se encuentran activos en los segmentos de red a los que el equipo está conectado.
+
+**Funcionamiento**
+* Inspecciona la configuración de red del sistema utilizando el comando `ip a`.
+* Filtra la salida para omitir la interfaz de loopback (`127.0.0.1`) y extrae dinámicamente los primeros tres octetos para identificar los segmentos de red actuales.
+* Elimina posibles segmentos duplicados (`sort -u`).
+* Itera sobre cada segmento de red descubierto, generando las 254 direcciones IP posibles (del 1 al 254).
+* Envía un único paquete ICMP Echo Request (`ping -c 1`) a cada IP generada, configurando un tiempo de espera máximo de 1 segundo (`-W 1`).
+* Reporta en la terminal las direcciones IP que responden exitosamente al ping, marcándolas como `DISPOSITIVO DETECTADO`.
